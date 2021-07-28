@@ -42,11 +42,16 @@ describe("newGame works correctly", () => {
     test("should reset score", () => {
         expect(game.score).toEqual(0);
     });
-    test("should reset currentGame", () => {
-        expect(game.currentGame).toEqual([])
-    });
+//    ----- NOT APPLICABLE ANYMORE AFTER ADD TURN IS ADDED
+//    test("should reset currentGame", () => { 
+//        expect(game.currentGame).toEqual([])
+//    });
+//    ----------------------------------------------- 
+    test("Computer's game array currentMoves should contain one move", () => {
+        expect(game.currentGame.length).toBe(1);
+    })
     test("should resets playerMoves", () => {
-        expect(game.playerMoves).toEqual([])
+        expect(game.playerMoves).toEqual([]);
     });
     test("should display 0 for the element with id of score", () => {
         expect(document.getElementById("score").innerText).toEqual(0);
