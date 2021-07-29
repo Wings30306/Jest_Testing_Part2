@@ -55,5 +55,16 @@ describe("newGame works correctly", () => {
     });
     test("should display 0 for the element with id of score", () => {
         expect(document.getElementById("score").innerText).toEqual(0);
-    })
+    });
+    // test("should set data-listener attribute to true after addTurn", () => {
+    //     let circles = Array.from(document.getElementsByClassName("circle"));
+    //     circles.forEach(circle => {
+    //         expect(circle.getAttribute("data-listener")).toBe("true")
+    //     });
+    // })
+    // test("should increment score if turn is correct", () => {
+    //     game.playerMoves.push(game.currentGame[0]);
+    //     playerTurn();
+    //     expect(game.score).toBe(1);
+    // });
 })
