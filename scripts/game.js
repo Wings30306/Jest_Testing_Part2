@@ -40,6 +40,14 @@ function addTurn(){
     game.currentGame = [...game.currentGame, game.choices[Math.floor(Math.random()*game.choices.length)]]
 }
 
+function lightsOn(circleId) {
+    let circle = document.getElementById(circleId);
+    circle.classList.add("light");
+    setTimeout(() => {
+        circle.classList.remove("light");
+    }, 1000)
+}
+
 // function playerTurn(){
 //     let i = game.playerMoves.length - 1;
 //     if (game.playerMoves[i] == game.currentGame[i]){
@@ -51,4 +59,4 @@ function addTurn(){
 //     }
 // }
 
-module.exports = { game, newGame };
+module.exports = { game, newGame, showScore, addTurn, lightsOn };
