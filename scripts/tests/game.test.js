@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 
-const { game, newGame, addTurn, lightsOn } = require("../game")
+const { game, newGame, addTurn, lightsOn, showTurns, playerTurn } = require("../game")
 
+jest.spyOn(window, "alert").mockImplementation(() => { })
 
 beforeAll(() => {
     let fs = require("fs");
@@ -28,6 +29,9 @@ describe("game object contains correct keys", () => {
     });
     test("choices array contains correct ids", () => {
         expect(game.choices).toEqual(["button1", "button2", "button3", "button4"]);
+    });
+    test("turnNumber key exists", () => {
+        expect("turnNumber" in game).toBe(true);
     });
 });
 
@@ -56,17 +60,12 @@ describe("newGame works correctly", () => {
     test("should display 0 for the element with id of score", () => {
         expect(document.getElementById("score").innerText).toEqual(0);
     });
-    // test("should set data-listener attribute to true after addTurn", () => {
-    //     let circles = Array.from(document.getElementsByClassName("circle"));
-    //     circles.forEach(circle => {
-    //         expect(circle.getAttribute("data-listener")).toBe("true")
-    //     });
-    // })
-    // test("should increment score if turn is correct", () => {
-    //     game.playerMoves.push(game.currentGame[0]);
-    //     playerTurn();
-    //     expect(game.score).toBe(1);
-    // });
+    test("should set data-listener attribute to true after addTurn", () => {
+        let circles = Array.from(document.getElementsByClassName("circle"));
+        circles.forEach(circle => {
+            expect(circle.getAttribute("data-listener")).toEqual("true")
+        });
+    });
 })
 
 describe("gameplay works correctly", () => {
@@ -74,6 +73,7 @@ describe("gameplay works correctly", () => {
         game.score = 0;
         game.currentGame = [];
         game.playerMoves = [];
+        game.turnNumber = 0;
         addTurn();
     });
     afterEach(() => {
@@ -90,7 +90,19 @@ describe("gameplay works correctly", () => {
         lightsOn(game.currentGame[0]);
         expect(button.classList).toContain("light");
     });
-    test("should show lights", () => {
-        // https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+JT101+2021_T1/courseware/6175d249ea924b1b8d315ba8e7bb1626/2e5bb68c4de248e584d4d59a0860d5ac/?child=last video 4, 1:45
+    test("showTurns should update game.turnNumber", () => {
+        game.turnNumber = 42;
+        showTurns();
+        expect(game.turnNumber).toBe(0);
+    });
+    test("should increment score if turn is correct", () => {
+        game.playerMoves.push(game.currentGame[0]);
+        playerTurn();
+        expect(game.score).toBe(1);
+    });
+    test("should call an alert if the move is wrong", () => {
+        game.playerMoves.push("wrong");
+        playerTurn();
+        expect(window.alert).toBeCalledWith("Wrong move!")
     })
-})
+});

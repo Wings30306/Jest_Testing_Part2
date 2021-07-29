@@ -3,6 +3,7 @@ let game = {
     currentGame: [],
     playerMoves: [],
     choices: ["button1", "button2", "button3", "button4"],
+    turnNumber: 0
 }
 
 /**
@@ -15,21 +16,20 @@ function newGame() {
     game.score = 0;
     game.currentGame = [];
     game.playerMoves = [];
+    for (let circle of document.getElementsByClassName("circle")){
+        if (circle.getAttribute("data-listener") !== "true"){
+            circle.addEventListener("click", (e) => {
+                let move = e.target.getAttribute("id");
+                lightsOn(move);
+                game.playerMoves.push(move);
+                playerTurn();
+            })
+            circle.setAttribute("data-listener", "true");
+        }
+    }
     showScore();
     addTurn();
-    // Array.from(document.getElementsByClassName("circle")).forEach(
-    //     circle => {
-    //         if (circle.getAttribute("data-listener" !== "true")) {
-    //             circle.addEventListener("click", (e) => {
-    //                 let move = e.target.getAttribute("id");
-    //                 lightsOn(move);
-    //                 game.playerMoves.push(move);
-    //                 playerTurn();
-    //             })
-    //             circle.setAttribute("data-listener", "true")
-    //         }          
-    //     }
-    // )
+    showTurns();
 }
 
 function showScore(){
@@ -48,15 +48,29 @@ function lightsOn(circleId) {
     }, 1000)
 }
 
-// function playerTurn(){
-//     let i = game.playerMoves.length - 1;
-//     if (game.playerMoves[i] == game.currentGame[i]){
-//         if (game.currentGame.length == game.playerMoves.length){
-//             game.score++;
-//             showScore();
-//             addTurn();
-//         }
-//     }
-// }
+function showTurns(){
+    game.turnNumber = 0;
+    let turns = setInterval(() => {
+        lightsOn(game.currentGame[game.turnNumber]);
+        game.turnNumber++;
+        if (game.turnNumber >= game.currentGame.length){
+            clearInterval(turns)
+        } 
+    }, 1100)
+}
 
-module.exports = { game, newGame, showScore, addTurn, lightsOn };
+function playerTurn(){
+    let i = game.playerMoves.length - 1;
+    if (game.playerMoves[i] == game.currentGame[i]){
+        if (game.currentGame.length == game.playerMoves.length){
+            game.score++;
+            showScore();
+            addTurn();
+        } 
+    } else {
+        alert("Wrong move!");
+        newGame();
+    }
+}
+
+module.exports = { game, newGame, showScore, addTurn, lightsOn, showTurns, playerTurn };
