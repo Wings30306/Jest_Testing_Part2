@@ -18,7 +18,9 @@ function newGame() {
     game.score = 0;
     game.currentGame = [];
     game.playerMoves = [];
-
+    game.turnNumber = 0,
+    game.turnInProgress = false,
+    game.lastButton = ""
     for (let circle of document.getElementsByClassName("circle")) {
         if (circle.getAttribute("data-listener") !== "true") {
             circle.addEventListener("click", (e) => {
