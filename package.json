@@ -18,6 +18,6 @@
   "homepage": "https://github.com/Wings30306/Jest_Testing_Part2#readme",
   "dependencies": {},
   "devDependencies": {
-    "jest": "^27.0.6"
+    "jest": "^30.5.2"
   }
 }
